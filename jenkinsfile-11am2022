@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    tools {
+        maven 'Maven-3.8.3'
+    }
+    stages {
+        stage('Fetching the code') {
+            steps {
+                git credentialsId: 'github-cred', url: 'https://github.com/Sukesh5186/java-db-Login.git'
+            }
+        }
+        stage('Build code') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+            stage('deploy the code') {
+            steps {
+                deploy adapters: [tomcat8(credentialsId: 'admin-tomcat', path: '', url: 'http://172.31.47.198:8080')], contextPath: 'sukesh', onFailure: false, war: '**/*.war'
+            }
+        }
+    }
+}
