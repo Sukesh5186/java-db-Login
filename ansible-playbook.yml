@@ -13,7 +13,9 @@
   hosts: webservers
   become: yes
   tasks:
-   
+    - name: remove existing document root
+      file: /var/www/html
+      state: absent
 
     - name: code copy
       git:
