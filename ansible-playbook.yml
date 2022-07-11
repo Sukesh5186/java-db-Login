@@ -3,11 +3,11 @@
   hosts: webservers
   become: yes
   vars:
-    v_roles_path= "{{ $WORKSPACE }}/roles"
+    v_roles_path: "{{ WORKSPACE }}/roles"
   roles:
-    - "{{ v_roles_path }}"/misl
-    - "{{ v_roles_path }}"/apache
-    - "{{ v_roles_path }}"/tomcat
+    - "{{ v_roles_path }}/misl"
+    - "{{ v_roles_path }}/apache"
+    - "{{ v_roles_path }}/tomcat"
 
 - name: Play2 - Custom configuration of apache code
   hosts: webservers
@@ -16,17 +16,17 @@
     - name: remove existing document root
       file: /var/www/html
       state: absent
-    
+
     - name: code copy
-      git: 
+      git:
         repo: https://github.com/Sukesh5186/java-db-Login.git
         dest: /var/www/html
         version: ansible-project
         force: yes
-    
+
     - name: copy proxypass file
       copy:
-        src: "{{ $WORKSPACE }}"/proxypass.conf
+        src: "{{ WORKSPACE }}/proxypass.conf"
         dest: /etc/httpd/conf.d/proxypass.conf
         owner: root
         group: root
@@ -60,13 +60,13 @@
         link: /usr/bin/python3.6
         path: /usr/bin/python3
       tags: python-alternatives
-    
+
 - name: Play4 - Python library istall and copying of war file (Install boto and botocore with pip3 module (these requirements are needed on the host that executes this module.aws s3 module))
   hosts: webservers
   become: yes
   vars:
     ansible-python-interpreter: /usr/bin/python
-  tasks: 
+  tasks:
     - name: Install boto and botocore with pip3 module
       pip:
         name:
@@ -93,4 +93,3 @@
     - name: start tomcat
       command: nohup sh /etc/tomcat/bin/startup.sh
       tags: start-tomcat
-
