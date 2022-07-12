@@ -65,8 +65,8 @@
 - name: Play4 - Python library istall and copying of war file (Install boto and botocore with pip3 module (these requirements are needed on the host that executes this module.aws s3 module))
   hosts: webservers
   become: yes
-  #vars:
-  #  ansible-python-interpreter: /usr/bin/python
+  vars:
+    ansible-python-interpreter: /usr/bin/python
   tasks:
     - name: Install boto and botocore with pip3 module
       ansible.builtin.pip:
