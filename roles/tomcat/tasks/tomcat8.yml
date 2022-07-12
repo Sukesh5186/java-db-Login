@@ -1,7 +1,7 @@
 
 - name: Unarchive a tomcat tar from tomcat website
   ansible.builtin.unarchive:
-    src: https://mirrors.estointernet.in/apache/tomcat/tomcat-8/v{{ tomcatVersion }}/bin/apache-tomcat-{{ tomcatVersion }}.tar.gz
+    src: https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.81/bin/apache-tomcat-8.5.81.tar.gz
     dest: /etc/
     remote_src: yes
     owner: root
