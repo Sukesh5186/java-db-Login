@@ -39,7 +39,7 @@
         name: httpd_can_network_connect
         state: yes
         persistent: yes
-      tages: setsebool
+      tags: setsebool
 
   handlers:
     - name: reload apache
