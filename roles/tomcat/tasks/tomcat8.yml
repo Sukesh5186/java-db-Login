@@ -12,7 +12,7 @@
 
 - name: create a soft link to the tomcat folder
   ansible.builtin.file:
-    src: /etc/apache-tomcat-{{ tomcatVersion }}
+    src: /etc/apache-tomcat-8.5.81
     dest: /etc/tomcat
     owner: root
     group: root
