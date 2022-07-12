@@ -1,5 +1,5 @@
 - name: "Copy httpd Configuration file"
-  copy:
+  ansible.builtin.copy:
     src: files/httpd.original
     dest: /etc/httpd/conf/httpd.conf
     owner: root

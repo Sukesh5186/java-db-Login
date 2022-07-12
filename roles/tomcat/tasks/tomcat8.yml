@@ -1,6 +1,6 @@
 
 - name: Unarchive a tomcat tar from tomcat website
-  unarchive:
+  ansible.builtin.unarchive:
     src: https://mirrors.estointernet.in/apache/tomcat/tomcat-8/v{{ tomcatVersion }}/bin/apache-tomcat-{{ tomcatVersion }}.tar.gz
     dest: /etc/
     remote_src: yes
@@ -11,11 +11,11 @@
    - tar-copy
 
 - name: create a soft link to the tomcat folder
-  file:
+  ansible.builtin.file:
     src: /etc/apache-tomcat-{{ tomcatVersion }}
     dest: /etc/tomcat
     owner: root
     group: root
     state: link
   tags:
-          - softlink
+    - softlink

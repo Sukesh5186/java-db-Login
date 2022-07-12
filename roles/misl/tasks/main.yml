@@ -4,7 +4,7 @@
 # Task 1 - installing vim, wget and nslookup
 
 - name: install the latest version of misl softwares
-  package:
+  ansible.builtin.package:
     name:
       - vim
       - wget

@@ -1,4 +1,4 @@
 - name: "Install Apache"
-  yum: 
+  ansible.builtin.yum: 
     name: "{{ packages }}"
     state: present
