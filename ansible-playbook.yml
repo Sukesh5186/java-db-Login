@@ -90,7 +90,7 @@
         tag: "latest"
         push: yes
         nocache: yes
-        #force: yes
+        force: yes
       register: out5
       tags: docker-image-build
     - ansible.builtin.debug:
