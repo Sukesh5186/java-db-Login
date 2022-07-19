@@ -71,7 +71,7 @@
         var: out3
 
     - name: "Delete the docker image"
-      community.docker.docker_image:
+      docker_image:
         state: absent
         force: yes
         name: 127.0.0.1:5000/lwplabslogin
@@ -82,7 +82,7 @@
         var: out4
 
     - name: "Build an image and push it to a private repo"
-      community.docker.docker_image:
+      docker_image:
         build:
           path: /tmp/{{ JOB_NAME }}
         name: 127.0.0.1:5000/lwplabslogin
@@ -100,7 +100,7 @@
   become: yes
   tasks:
     - name: Remove stack
-      community.docker.docker_stack:
+      docker_stack:
         name: "{{ JOB_NAME }}"
         state: absent
       tags: docker-stack-remove
@@ -109,7 +109,7 @@
       shell: sleep 10
 
     - name: Deploy stack from a compose file
-      community.docker.docker_stack:
+      docker_stack:
         state: present
         name: "{{ JOB_NAME }}"
         compose:
