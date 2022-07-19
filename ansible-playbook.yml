@@ -1,10 +1,10 @@
 ---
 - name: Play1 for copying files
-  hosts: docker-master
+  hosts: dockerMaster
   become: yes
   tasks:
     - name: Create a directory if it does not exist
-      file:
+      ansible.builtin.file:
         path: /tmp/{{ job_name }}
         state: directory
         mode: '0755'
@@ -14,8 +14,8 @@
          - create-dir
 
     - name: Copy the war file, dockerfile & lwplabs-com.yml to docker master server
-      copy:
-        src: /etc/ansible/{{ job_name }}/
+      ansible.builtin.copy:
+        src: "{{ ANSIBLE_WORKSPACE }}/"
         dest: /tmp/{{ job_name }}
         owner: ansadmin
         group: root
@@ -24,38 +24,38 @@
         - copy_code
 
 - name: "Play 2- python installation"
-  hosts: docker-master
+  hosts: dockerMaster
   become: yes
   tasks:
     - name: Install Python 3.6
-      yum:
+      ansible.builtin.yum:
         name: python36
         state: present
       register: out1
       tags:
         - python-install
-    - debug:
+    - ansible.builtin.ansible.builtin.debug:
         var: out1
 
     - name: alternatives
-      alternatives:
+      community.general.alternatives:
         name: python
         link: /usr/bin/python3.6
         path: /usr/bin/python3
       register: out2
       tags:
         - python-alternatives
-    - debug:
+    - ansible.builtin.ansible.builtin.debug:
         var: out2
 
 - name: "Play 3 Install Python packages and docker image push"
-  hosts: docker-master
+  hosts: dockerMaster
   become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Install boto3 and botocore with pip3 module
-      pip:
+      ansible.builtin.pip:
        name:
         - boto
         - boto3
@@ -67,40 +67,40 @@
        executable: pip3.6
       register: out3
       tags: docker-lib-install
-    - debug:
+    - ansible.builtin.ansible.builtin.debug:
         var: out3
 
     - name: "Delete the docker image"
-      docker_image:
+      community.docker.docker_image:
         state: absent
         force: yes
         name: 127.0.0.1:5000/lwplabslogin
         tag: latest
       register: out4
       tags: docker-image-deletion
-    - debug:
+    - ansible.builtin.debug:
         var: out4
 
     - name: "Build an image and push it to a private repo"
-      docker_image:
+      community.docker.docker_image:
         build:
           path: /tmp/{{ job_name }}
         name: 127.0.0.1:5000/lwplabslogin
-        tag: "{{ tag_name }}"
+        tag: "latest"
         push: yes
         nocache: yes
         force: yes
       register: out5
       tags: docker-image-build
-    - debug:
+    - ansible.builtin.debug:
         var: out5
 
-- name: "Play 3 docker stack deploy"
-  hosts: docker-master
+- name: "Play 4 docker stack deploy"
+  hosts: dockerMaster
   become: yes
   tasks:
     - name: Remove stack
-      docker_stack:
+      community.docker.docker_stack:
         name: "{{ job_name }}"
         state: absent
       tags: docker-stack-remove
@@ -109,13 +109,12 @@
       shell: sleep 10
 
     - name: Deploy stack from a compose file
-      docker_stack:
+      community.docker.docker_stack:
         state: present
         name: "{{ job_name }}"
         compose:
           - /tmp/{{ job_name }}/docker-stack.yml
       register: out6
       tags: docker-stack-deploy
-    - debug:
+    - ansible.builtin.debug:
         var: out6
-
