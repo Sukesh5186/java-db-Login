@@ -73,7 +73,7 @@
     - name: "Delete the docker image"
       community.docker.docker_image:
         state: absent
-        #force: yes
+        force_absent: yes
         name: 127.0.0.1:5000/lwplabslogin
         tag: latest
       register: out4
@@ -90,7 +90,7 @@
         tag: "latest"
         push: yes
         nocache: yes
-        force: yes
+        force_source: yes
       register: out5
       tags: docker-image-build
     - ansible.builtin.debug:
