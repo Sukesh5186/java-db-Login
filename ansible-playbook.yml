@@ -71,9 +71,9 @@
         var: out3
 
     - name: "Delete the docker image"
-      docker_image:
+      community.docker.docker_image:
         state: absent
-        force: yes
+        #force: yes
         name: 127.0.0.1:5000/lwplabslogin
         tag: latest
       register: out4
@@ -82,14 +82,14 @@
         var: out4
 
     - name: "Build an image and push it to a private repo"
-      docker_image:
+      community.docker.docker_image:
         build:
           path: /tmp/{{ JOB_NAME }}
         name: 127.0.0.1:5000/lwplabslogin
         tag: "latest"
         push: yes
         nocache: yes
-        force: yes
+        #force: yes
       register: out5
       tags: docker-image-build
     - ansible.builtin.debug:
@@ -100,7 +100,7 @@
   become: yes
   tasks:
     - name: Remove stack
-      docker_stack:
+      community.docker.docker_stack:
         name: "{{ JOB_NAME }}"
         state: absent
       tags: docker-stack-remove
@@ -109,7 +109,7 @@
       shell: sleep 10
 
     - name: Deploy stack from a compose file
-      docker_stack:
+      community.docker.docker_stack:
         state: present
         name: "{{ JOB_NAME }}"
         compose:
