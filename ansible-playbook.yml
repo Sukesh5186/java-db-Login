@@ -34,7 +34,7 @@
       register: out1
       tags:
         - python-install
-    - ansible.builtin.ansible.builtin.debug:
+    - ansible.builtin.debug:
         var: out1
 
     - name: alternatives
@@ -45,7 +45,7 @@
       register: out2
       tags:
         - python-alternatives
-    - ansible.builtin.ansible.builtin.debug:
+    - ansible.builtin.debug:
         var: out2
 
 - name: "Play 3 Install Python packages and docker image push"
@@ -67,7 +67,7 @@
        executable: pip3.6
       register: out3
       tags: docker-lib-install
-    - ansible.builtin.ansible.builtin.debug:
+    - ansible.builtin.debug:
         var: out3
 
     - name: "Delete the docker image"
